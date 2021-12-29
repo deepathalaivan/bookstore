@@ -23,8 +23,13 @@ public class BookController {
         return bookService.addBook(book);
     }
 
-    @DeleteMapping(path = "books/{bookId}")
+    @DeleteMapping(path = "/books/{bookId}")
     public String deleteBook(@PathVariable Long bookId) {
         return bookService.deleteBook(bookId);
+    }
+
+    @PutMapping(path = "/updatebook")
+    public String updateBook(@RequestBody Book book) {
+        return bookService.updateBook(book);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.bookstore.service;
 
 import com.example.bookstore.model.Book;
+import com.example.bookstore.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,22 +11,33 @@ import java.util.List;
 
 @Service
 public class BookService {
-    List<Book> bookList = new ArrayList<>(Arrays.asList(
-            new Book(1l,"Author1", "Book1"),
-            new Book(2l,"Author2", "Book2"),
-            new Book(3l,"Author3", "Book3")));
+
+    @Autowired
+    BookRepository bookRepository;
+
 //get all books
     public List<Book> getAllBooks() {
-        return bookList;
+        return this.bookRepository.findAll();
     }
 // insert book
     public String addBook(Book book) {
-        bookList.add(book);
+        this.bookRepository.save(book);
         return "Book is added successfully";
     }
 //delete book
     public String deleteBook(Long bookId) {
-        bookList.removeIf(book -> book.getBookId().equals(bookId));
-        return "Book is removed successfully";
+        if(this.bookRepository.existsById(bookId)) {
+            this.bookRepository.deleteById(bookId);
+            return "Book is removed successfully";
+        }
+        return "Book is not found and not deleted";
+    }
+    //update book
+    public String updateBook(Book book) {
+        if(this.bookRepository.existsById(book.getBookId())) {
+          this.bookRepository.save(book);
+          return "Book is updated successfully";
+        }
+        return "Book is not found and not updated";
     }
 }

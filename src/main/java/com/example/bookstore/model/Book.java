@@ -1,6 +1,11 @@
 package com.example.bookstore.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Book {
+    @Id
     private Long bookId;
     private String author;
     private String bookName;
